@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/jquery.md5.js"></script>
+</head>
+<body>
+	<h1>用户登录</h1>
+	<form id="subForm" action="main.html" method="get">
+		<p>
+			username: <input id="username" type="text" name="username" />
+		</p>
+		<p>
+			password: <input id="password" type="password" name="password" />
+		</p>
+		<input type="button" value="Submit" onclick="toVaild()"/>
+	</form>
+	<p id="msg"></p>
+	<script>
+		
+		function toVaild() {
+			var username = $("#username").val();
+			var password = $("#password").val();
+			var msg = "";
+			var code;
+			if (username == null || $.trim(username) == "") {
+				msg = "用户名为空";
+				code="-1";
+				$('#msg').html(msg);
+				return false;
+			} else if (password == null || $.trim(password) == "") {
+				msg = "密码为空";
+				code="-1";
+				$('#msg').html(msg);
+				return false;
+			} else {
+				var requestData = {};
+				password= $.md5(password)
+				requestData.username = username;
+				requestData.password = password;
+				$.ajax({
+					type : 'GET',
+					data : requestData,
+					async: false,
+					url : 'http://localhost:8080/user/login',
+					dataType : 'json',
+					success : function(data) {
+						msg = data.msg;
+						code = data.code;
+						$('#msg').html(msg);
+						if (code == "0") {
+							//$('#subForm').attr("action","main.html");
+							$('#subForm').submit();
+						} 
+					}
+				});
+			}
+			//$('#subForm').attr("action","main.html");
+		}
+	</script>
+</body>
+</html>
