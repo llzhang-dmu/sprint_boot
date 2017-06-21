@@ -10,7 +10,7 @@ spring:
     databaseName: test
     serverName: 127.0.0.1
     username: root
-    password: root
+    password: 
     cachePrepStmts: true
     prepStmtsSize: 250
     prepStmtsCacheSqlLimit: 2048
